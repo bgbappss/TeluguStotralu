@@ -62,7 +62,7 @@
 	<!-- default -->
 	<plugin name="cordova-plugin-device" />
 	<plugin name="cordova-plugin-console" />
-	<plugin name="cordova-plugin-whitelist" />
+	<!-- <plugin name="cordova-plugin-whitelist" />-->
 	<plugin name="cordova-plugin-splashscreen" />
 	<plugin name="cordova-plugin-statusbar" />
 	<plugin name="ionic-plugin-keyboard" />
