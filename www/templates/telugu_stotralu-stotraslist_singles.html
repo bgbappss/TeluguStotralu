@@ -1,0 +1,30 @@
+	<ion-view view-title="StotrasList Detail" hide-nav-bar="false" >
+		<!-- content -->
+		<ion-content delegate-handle="top"   id="page-stotraslist_singles" class="page-stotraslist_singles">
+		
+			<ion-refresher pulling-text="Pull to refresh..."  on-refresh="doRefresh()"></ion-refresher>
+			<div class="tabs tabs-colorful tabs-icon-top static">
+				<a ng-click="$ionicGoBack()" class="tab-item">
+					<i class="icon ion-ios-albums-outline"></i> List
+				</a>
+				<a  class="tab-item tab-item-active active">
+					<i class="icon ion-ios-list-outline"></i> Detail
+				</a>
+				</div>
+			<div class="list card">
+					<div class="item item-text-wrap noborder to_trusted" ng-bind-html="stotraslist.content.rendered | strHTML"></div>
+					<div class="item">
+					<p>Share</p>
+					<div class="button-bar">
+						<button class="button button-small button-assertive icon ion-social-googleplus" ng-click="openURL('https://plus.google.com/share?url=' + stotraslist.link)"></button>
+						<button class="button button-small button-positive icon ion-social-facebook" ng-click="openURL('https://facebook.com/sharer/sharer.php?u=' + stotraslist.link)"></button>
+						<button class="button button-small button-calm icon ion-social-twitter" ng-click="openURL('https://twitter.com/share?url=' + stotraslist.link)"></button>
+						<button class="button button-small button-assertive-900 icon ion-social-pinterest" ng-click="openURL('https://pinterest.com/pin/create/bookmarklet/?&url=' + stotraslist.link)"></button>
+						<button class="button button-small button-positive-900 icon ion-social-linkedin" ng-click="openURL('https://www.linkedin.com/shareArticle?url=' + stotraslist.link)"></button>
+					</div>
+					</div>
+			</div>
+
+		</ion-content>
+		<!-- ./content -->
+	</ion-view>

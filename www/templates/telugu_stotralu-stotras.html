@@ -1,0 +1,48 @@
+	<ion-view view-title="స్తోత్రాలు" hide-nav-bar="false" >
+		<!-- content -->
+		<ion-content delegate-handle="top"   id="page-stotras" class=" page-stotras">
+					<!-- code refresh -->
+			<ion-refresher pulling-text="Pull to refresh..."  on-refresh="doRefresh()"></ion-refresher>
+			<!-- ./code refresh -->
+			
+
+			
+
+			<!-- code listing -->
+			<div class="list animate-fade-slide-in-right">
+				<div class="" ng-repeat="item in stotrass | filter:filter_stotrass as results" ng-init="$last ? fireEvent() : null" >
+					<div class="card colorful-bg light ink ink-dark">
+						<a class="item item-avatar item-text-wrap" ng-href="#/telugu_stotralu/stotrasposts/{{item.id}}" >
+								<img alt="" class="avatar" ng-src="{{item.category_image.guid}}" />
+							<h2  ng-bind-html="item.description | to_trusted"></h2>
+								<p >
+								{{item.count}} స్తోత్రాలు
+								</p>
+						</a>
+					</div>
+				</div>
+			</div>
+			<!-- ./code listing -->
+
+
+			<!-- code infinite scroll -->
+			<ion-list class="list">
+				<ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="onInfinite()" distance="5px" ng-if="hasMoreData"></ion-infinite-scroll>
+			</ion-list>
+			<!-- ./code infinite scroll -->
+
+
+			<!-- code search result not found -->
+			<ion-list class="list">
+				<div class="item" ng-if="results.length == 0" >
+					<p>No results found...!</p>
+				</div>
+			</ion-list>
+			<!-- code search result not found -->
+
+
+
+
+		</ion-content>
+		<!-- ./content -->
+	</ion-view>
