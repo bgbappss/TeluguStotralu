@@ -139,6 +139,20 @@ angular.module("telugu_stotralu", ["ngCordova","ionic","ionMdInput","ionic-mater
 		}
 	})
 
+	.state("telugu_stotralu.stotras_singles", {
+		url: "/stotras_singles/:id",
+		cache:false,
+		views: {
+			"telugu_stotralu-side_menus" : {
+						templateUrl:"templates/telugu_stotralu-stotras_singles.html",
+						controller: "stotras_singlesCtrl"
+					},
+			"fabButtonUp" : {
+						template: '',
+					},
+		}
+	})
+
 	.state("telugu_stotralu.stotraslist_singles", {
 		url: "/stotraslist_singles/:id",
 		cache:false,

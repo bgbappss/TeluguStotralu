@@ -1,0 +1,20 @@
+	<ion-view view-title="{{ stotras.description }}" hide-nav-bar="false" >
+		<!-- content -->
+		<ion-content delegate-handle="top"   id="page-stotras_singles" class="page-stotras_singles">
+		
+			<ion-refresher pulling-text="Pull to refresh..."  on-refresh="doRefresh()"></ion-refresher>
+			<div class="tabs tabs-colorful tabs-icon-top static">
+				<a ng-click="$ionicGoBack()" class="tab-item">
+					<i class="icon ion-ios-albums-outline"></i> List
+				</a>
+				<a  class="tab-item tab-item-active active">
+					<i class="icon ion-ios-list-outline"></i> Detail
+				</a>
+				</div>
+			<div class="list card">
+					<div class="item"  ng-bind-html="stotras.description | to_trusted">{{stotras.description}}</div>
+			</div>
+
+		</ion-content>
+		<!-- ./content -->
+	</ion-view>

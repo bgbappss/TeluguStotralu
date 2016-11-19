@@ -674,6 +674,237 @@ angular.module("telugu_stotralu.controllers", [])
 	controller_by_user();
 })
 
+// TODO: stotras_singlesCtrl --|-- 
+.controller("stotras_singlesCtrl", function($scope,$rootScope,$state,$location,$ionicScrollDelegate,$http,$httpParamSerializer,$stateParams,$timeout,$interval,$ionicLoading,$ionicPopup,$ionicPopover,$ionicSlideBoxDelegate,$ionicHistory,ionicMaterialInk,ionicMaterialMotion,$window,$ionicModal,base64,md5,$document,$sce,$ionicGesture){
+	
+	$rootScope.headerExists = true;
+	$rootScope.ionWidth = $document[0].body.querySelector(".view-container").offsetWidth || 412;
+	$rootScope.grid64 = parseInt($rootScope.ionWidth / 64) ;
+	$rootScope.grid80 = parseInt($rootScope.ionWidth / 80) ;
+	$rootScope.grid128 = parseInt($rootScope.ionWidth / 128) ;
+	$rootScope.grid256 = parseInt($rootScope.ionWidth / 256) ;
+	$rootScope.last_edit = "table (stotras)" ;
+	$scope.$on("$ionicView.afterEnter", function (){
+		var page_id = $state.current.name ;
+		$rootScope.page_id = page_id.replace(".","-") ;
+	});
+	$scope.$on("$ionicView.enter", function (){
+		$scope.scrollTop();
+	});
+	// TODO: stotras_singlesCtrl --|-- $scope.scrollTop
+	$rootScope.scrollTop = function(){
+		$ionicScrollDelegate.$getByHandle("top").scrollTop();
+	};
+	// TODO: stotras_singlesCtrl --|-- $scope.openURL
+	// open external browser 
+	$scope.openURL = function($url){
+		window.open($url,"_system","location=yes");
+	};
+	// TODO: stotras_singlesCtrl --|-- $scope.openAppBrowser
+	// open AppBrowser
+	$scope.openAppBrowser = function($url){
+		window.open($url,"_blank","hardwareback=Done");
+	};
+	// TODO: stotras_singlesCtrl --|-- $scope.openWebView
+	// open WebView
+	$scope.openWebView = function($url){
+		window.open($url,"_self");
+	};
+	
+	// TODO: stotras_singlesCtrl --|-- $scope.redirect
+	// redirect
+	$scope.redirect = function($url){
+		$window.location.href = $url;
+	};
+	
+	// Set Motion
+	$timeout(function(){
+		ionicMaterialMotion.slideUp({
+			selector: ".slide-up"
+		});
+	}, 300);
+	// TODO: stotras_singlesCtrl --|-- $scope.showAuthentication
+	$scope.showAuthentication  = function(){
+		var authPopup = $ionicPopup.show({
+			template: ' This page required login',
+			title: "Authorization",
+			subTitle: "Authorization is required",
+			scope: $scope,
+			buttons: [
+				{text:"Cancel",onTap: function(e){
+					$state.go("telugu_stotralu.stotras");
+				}},
+			],
+		}).then(function(form){
+		},function(err){
+		},function(msg){
+		});
+	};
+	
+	// set default parameter http
+	var http_params = {};
+
+	// set HTTP Header 
+	var http_header = {
+		headers: {
+		},
+		params: http_params
+	};
+	// animation loading 
+	$ionicLoading.show({
+		template: '<div class="loader"><svg class="circular"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/></svg></div>'
+	});
+	
+	// Retrieving data
+	var itemID = $stateParams.id;
+	// TODO: stotras_singlesCtrl --|-- $scope.fetchURL
+	$scope.fetchURL = "http://gumig.com/allgodsstotras/wp-json/wp/v2/categories?per_page=100";
+	// TODO: stotras_singlesCtrl --|-- $scope.fetchURLp
+	$scope.fetchURLp = "http://gumig.com/allgodsstotras/wp-json/wp/v2/categories?per_page=100&callback=JSON_CALLBACK";
+	// TODO: stotras_singlesCtrl --|-- $scope.hashURL
+	$scope.hashURL = md5.createHash($scope.fetchURL);
+	
+	var current_item = [];
+	localforage.getItem("data_stotrass_" + $scope.hashURL, function(err, get_datas){
+		if(get_datas === null){
+			current_item = [];
+		}else{
+			if(get_datas !== null){
+				var datas = JSON.parse(get_datas);
+				for (var i = 0; i < datas.length; i++) {
+					if((datas[i].id ===  parseInt(itemID)) || (datas[i].id === itemID.toString())) {
+						current_item = datas[i] ;
+					}
+				}
+			}
+			// event done, hidden animation loading
+			$timeout(function(){
+				$ionicLoading.hide();
+				$scope.stotras = current_item ;
+				controller_by_user();
+			}, 100);
+		};
+	}).then(function(value){
+	}).catch(function (err){
+	})
+	if( current_item.length === 0 ){
+		var itemID = $stateParams.id;
+		var current_item = [];
+	
+		// set HTTP Header 
+		http_header = {
+			headers: {
+			},
+			params: http_params
+		};
+		// TODO: stotras_singlesCtrl --|-- $http.get
+		$http.get($scope.fetchURL,http_header).then(function(response) {
+			// Get data single
+			var datas = response.data;
+			// TODO: stotras_singlesCtrl --|---------- set:localforage
+			localforage.setItem("data_stotrass_"+ $scope.hashURL,JSON.stringify(datas));
+			for (var i = 0; i < datas.length; i++) {
+				if((datas[i].id ===  parseInt(itemID)) || (datas[i].id === itemID.toString())) {
+					current_item = datas[i] ;
+				}
+			}
+		},function(data) {
+					// Error message
+					var alertPopup = $ionicPopup.alert({
+						title: "Network Error",
+						template: "An error occurred while collecting data.",
+					});
+		}).finally(function() {
+			$scope.$broadcast("scroll.refreshComplete");
+			// event done, hidden animation loading
+			$timeout(function() {
+				$ionicLoading.hide();
+				$scope.stotras = current_item ;
+				controller_by_user();
+			}, 500);
+		});
+	}
+	
+	
+		// TODO: stotras_singlesCtrl --|-- $scope.doRefresh
+	$scope.doRefresh = function(){
+		// Retrieving data
+		var itemID = $stateParams.id;
+		var current_item = [];
+		// overwrite http_header 
+		http_header = {
+			headers: {
+			},
+			params: http_params
+		};
+		// TODO: stotras_singlesCtrl --|------ $http.get
+		$http.get($scope.fetchURL,http_header).then(function(response) {
+			// Get data single
+			var datas = response.data;
+			// TODO: stotras_singlesCtrl --|---------- set:localforage
+			localforage.setItem("data_stotrass_"+ $scope.hashURL,JSON.stringify(datas));
+			for (var i = 0; i < datas.length; i++) {
+				if((datas[i].id ===  parseInt(itemID)) || (datas[i].id === itemID.toString())) {
+					current_item = datas[i] ;
+				}
+			}
+		},function(data) {
+			// Error message
+		// TODO: stotras_singlesCtrl --|---------- $http.jsonp
+				$http.jsonp($scope.fetchURLp,http_header).success(function(response){
+					// Get data single
+					var datas = response;
+			// TODO: stotras_singlesCtrl --|---------- set:localforage
+			localforage.setItem("data_stotrass_"+ $scope.hashURL,JSON.stringify(datas));
+					for (var i = 0; i < datas.length; i++) {
+						if((datas[i].id ===  parseInt(itemID)) || (datas[i].id === itemID.toString())) {
+							current_item = datas[i] ;
+						}
+					}
+						$scope.$broadcast("scroll.refreshComplete");
+						// event done, hidden animation loading
+						$timeout(function() {
+							$ionicLoading.hide();
+							$scope.stotras = current_item ;
+							controller_by_user();
+						}, 500);
+					}).error(function(resp){
+						var alertPopup = $ionicPopup.alert({
+							title: "Network Error",
+							template: "An error occurred while collecting data.",
+						});
+					});
+		}).finally(function() {
+			$scope.$broadcast("scroll.refreshComplete");
+			// event done, hidden animation loading
+			$timeout(function() {
+				$ionicLoading.hide();
+				$scope.stotras = current_item ;
+				controller_by_user();
+			}, 500);
+		});
+	};
+	// code 
+
+	// TODO: stotras_singlesCtrl --|-- controller_by_user
+	// controller by user 
+	function controller_by_user(){
+		try {
+			
+			
+		} catch(e){
+			console.log("%cerror: %cPage: `stotras_singles` and field: `Custom Controller`","color:blue;font-size:18px","color:red;font-size:18px");
+			console.dir(e);
+		}
+	}
+	$scope.rating = {};
+	$scope.rating.max = 5;
+	
+	// animation ink (ionic-material)
+	ionicMaterialInk.displayEffect();
+	controller_by_user();
+})
+
 // TODO: stotraslist_singlesCtrl --|-- 
 .controller("stotraslist_singlesCtrl", function($scope,$rootScope,$state,$location,$ionicScrollDelegate,$http,$httpParamSerializer,$stateParams,$timeout,$interval,$ionicLoading,$ionicPopup,$ionicPopover,$ionicSlideBoxDelegate,$ionicHistory,ionicMaterialInk,ionicMaterialMotion,$window,$ionicModal,base64,md5,$document,$sce,$ionicGesture){
 	
@@ -965,7 +1196,7 @@ angular.module("telugu_stotralu.controllers", [])
 	};
 	var targetQuery = ""; //default param
 	var raplaceWithQuery = "";
-	//fix url Stotrasposts
+	//fix url స్తోత్రాలు
 	targetQuery = "categories=1"; //default param
 	raplaceWithQuery = "categories=1";
 	if($stateParams.categories!==''){
