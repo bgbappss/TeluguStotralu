@@ -66,6 +66,8 @@
 	<plugin name="cordova-plugin-splashscreen" />
 	<plugin name="cordova-plugin-statusbar" />
 	<plugin name="ionic-plugin-keyboard" />
+	
+	<gap:plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<!-- ./default -->
 	<plugin name="cordova-plugin-inappbrowser" />
 	<platform name="android">
