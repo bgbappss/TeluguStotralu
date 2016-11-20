@@ -1196,7 +1196,7 @@ angular.module("telugu_stotralu.controllers", [])
 	};
 	var targetQuery = ""; //default param
 	var raplaceWithQuery = "";
-	//fix url స్తోత్రాలు
+	//fix url స్తోత్రములు
 	targetQuery = "categories=1"; //default param
 	raplaceWithQuery = "categories=1";
 	if($stateParams.categories!==''){

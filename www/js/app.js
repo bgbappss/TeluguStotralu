@@ -176,7 +176,12 @@ angular.module("telugu_stotralu", ["ngCordova","ionic","ionMdInput","ionic-mater
 						controller: "stotraspostsCtrl"
 					},
 			"fabButtonUp" : {
-						template: '',
+						template: '<button id="fab-up-button" ng-click="scrollTop()" class="button button-fab button-fab-bottom-right button-energized-900 spin"><i class="icon ion-arrow-up-a"></i></button>',
+						controller: function ($timeout) {
+							$timeout(function () {
+								document.getElementById("fab-up-button").classList.toggle("on");
+							}, 900);
+						}
 					},
 		}
 	})
