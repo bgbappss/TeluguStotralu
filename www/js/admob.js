@@ -1,7 +1,7 @@
 var admobid = {};
 if( /(android)/i.test(navigator.userAgent)){
 	admobid = { //for Android
-		banner: "",
+		banner: "ca-app-pub-1861528028052459/4244063328",
 		interstitial: "ca-app-pub-1861528028052459/6698002125"
 	};
 } else if(/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
